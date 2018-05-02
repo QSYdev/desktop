@@ -14,7 +14,7 @@ public final class Main {
 		terminal.addListener(view.getEventHandler());
 		view.addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosed(WindowEvent e) {
+			public void windowClosing(WindowEvent e) {
 				view.close();
 				terminal.close();
 			}
