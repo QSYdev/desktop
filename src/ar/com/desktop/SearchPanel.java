@@ -16,6 +16,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import ar.com.terminal.shared.Color;
+
 public final class SearchPanel extends JPanel implements AutoCloseable {
 
 	private static final long serialVersionUID = 1L;
@@ -26,7 +28,7 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 
 	private final QSYTableModel model;
 
-	public SearchPanel(final QSYFrame parent) {
+	public SearchPanel(QSYFrame parent) {
 		this.setBorder(BorderFactory.createTitledBorder("Nodes"));
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -34,13 +36,13 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFillsViewportHeight(true);
 
-		final DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 
-		final JScrollPane scrollPanel = new JScrollPane(table);
+		JScrollPane scrollPanel = new JScrollPane(table);
 		this.add(scrollPanel);
 
 		model = (QSYTableModel) table.getModel();
@@ -50,11 +52,8 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 		btnStartSearch.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(final ActionEvent e) {
-				// while (table.getModel().getRowCount() > 0) {
-				// ((QSYTableModel) table.getModel()).removeRow(0);
-				// }
-				parent.getLibterminal().searchNodes();
+			public void actionPerformed(ActionEvent e) {
+				parent.getTerminal().searchNodes();
 				btnStopSearch.setVisible(true);
 				btnStartSearch.setVisible(false);
 			}
@@ -65,23 +64,23 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
-			public void valueChanged(final ListSelectionEvent e) {
-				final int selectedRow = table.getSelectedRow();
-				final boolean enabled = selectedRow != -1;
+			public void valueChanged(ListSelectionEvent e) {
+				int selectedRow = table.getSelectedRow();
+				boolean enabled = selectedRow != -1;
 
 				parent.getCommandPanel().setEnabled(enabled);
 			}
 
 		});
 
-		btnStopSearch = new JButton("Finalize Nodes Search");
+		btnStopSearch = new JButton("Finalize Nodes Searching");
 		btnStopSearch.setAlignmentX(CENTER_ALIGNMENT);
 		btnStopSearch.setVisible(false);
 		btnStopSearch.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(final ActionEvent e) {
-				parent.getLibterminal().finalizeNodesSearching();
+			public void actionPerformed(ActionEvent e) {
+				parent.getTerminal().finalizeNodesSearching();
 				btnStopSearch.setVisible(false);
 				btnStartSearch.setVisible(true);
 			}
@@ -94,12 +93,16 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 		return table;
 	}
 
-	public void addNewNode(final int physicalId, final InetAddress nodeAddress) {
-		model.addNode(physicalId, nodeAddress);
+	public void addNewNode(int physicalId, InetAddress nodeAddress, Color color) {
+		model.addNode(physicalId, nodeAddress, color);
 	}
 
-	public void removeNode(final int physicalId, final InetAddress nodeAddress) {
-		model.removeNode(physicalId, nodeAddress);
+	public void editNode(int physicalId, Color color) {
+		model.editNode(physicalId, color);
+	}
+
+	public void removeNode(int physicalId) {
+		model.removeNode(physicalId);
 	}
 
 	@Override

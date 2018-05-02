@@ -14,6 +14,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import ar.com.terminal.internal.Terminal;
+import ar.com.terminal.shared.Color;
 import ar.com.terminal.shared.EventListener;
 import ar.com.terminal.shared.ExternalEvent;
 import ar.com.terminal.shared.ExternalEventVisitor;
@@ -32,7 +33,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 	private final RoutinePanel routinePanel;
 	private final StressPanel stressPanel;
 
-	private final Terminal libterminal;
+	private final Terminal terminal;
 
 	public QSYFrame(Terminal terminal) {
 		super("QSY Packet Sender");
@@ -45,14 +46,14 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		setBounds(0, 0, WIDTH, HEIGHT);
 		setLocationRelativeTo(null);
 
-		this.libterminal = terminal;
+		this.terminal = terminal;
 
 		searchPanel = new SearchPanel(this);
 		commandPanel = new CommandPanel(this);
 		routinePanel = new RoutinePanel(this);
 		stressPanel = new StressPanel(this);
 
-		final Container rightPane = new Container();
+		Container rightPane = new Container();
 		rightPane.setLayout(new BoxLayout(rightPane, BoxLayout.Y_AXIS));
 		rightPane.add(commandPanel);
 		rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0, Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
@@ -63,7 +64,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		rightPane.add(stressPanel);
 		rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0, Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
 
-		final JPanel contentPane = (JPanel) this.getContentPane();
+		JPanel contentPane = (JPanel) this.getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
 		contentPane.add(searchPanel, BorderLayout.CENTER);
@@ -84,8 +85,8 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		return commandPanel;
 	}
 
-	public Terminal getLibterminal() {
-		return libterminal;
+	public Terminal getTerminal() {
+		return terminal;
 	}
 
 	public EventHandler getEventHandler() {
@@ -122,7 +123,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 							event.accept(EventHandler.this);
 						}
 					});
-				} catch (final InterruptedException e) {
+				} catch (InterruptedException e) {
 					running = false;
 				}
 			}
@@ -135,12 +136,12 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 		@Override
 		public void visit(ExternalEvent.ConnectedNode event) {
-			searchPanel.addNewNode(event.getPhysicalId(), event.getNodeAddress());
+			searchPanel.addNewNode(event.getPhysicalId(), event.getNodeAddress(), Color.NO_COLOR);
 		}
 
 		@Override
 		public void visit(ExternalEvent.DisconnectedNode event) {
-			searchPanel.removeNode(event.getPhysicalId(), event.getNodeAddress());
+			searchPanel.removeNode(event.getPhysicalId());
 		}
 
 		@Override

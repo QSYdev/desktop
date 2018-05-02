@@ -33,19 +33,19 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 	private final JCheckBox checkBoxStepId;
 	private final JButton btnSendCommand;
 
-	public CommandPanel(final QSYFrame parent) {
+	public CommandPanel(QSYFrame parent) {
 		this.setLayout(new GridLayout(0, 1, 2, 2));
 
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Command"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-		final JLabel lblColor = new JLabel("Color:");
+		JLabel lblColor = new JLabel("Color:");
 		this.add(lblColor);
 
 		comboBoxColor = new JComboBox<>();
 		comboBoxColor.setModel(new DefaultComboBoxModel<>(comboBoxPosibilites));
 		this.add(comboBoxColor);
 
-		final JLabel lblDelay = new JLabel("Delay: (ms)");
+		JLabel lblDelay = new JLabel("Delay: (ms)");
 		this.add(lblDelay);
 
 		textDelay = new JTextField();
@@ -54,15 +54,6 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 		textDelay.setMaximumSize(new Dimension(Integer.MAX_VALUE, textDelay.getPreferredSize().width));
 		this.add(textDelay);
 
-		/*
-		 * final JLabel lblStepId = new JLabel("StepId :"); this.add(lblStepId);
-		 * 
-		 * checkBoxStepId = new JTextField();
-		 * checkBoxStepId.setHorizontalAlignment(SwingConstants.LEFT);
-		 * checkBoxStepId.setText("0"); checkBoxStepId.setMaximumSize(new
-		 * Dimension(Integer.MAX_VALUE, checkBoxStepId.getPreferredSize().width));
-		 * this.add(checkBoxStepId);
-		 */
 		checkBoxStepId = new JCheckBox("Activar sensor");
 		checkBoxStepId.setMnemonic(KeyEvent.VK_A);
 		this.add(checkBoxStepId);
@@ -73,24 +64,25 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 		btnSendCommand.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(final ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				try {
-					final JTable table = parent.getSearchPanel().getTable();
+					JTable table = parent.getSearchPanel().getTable();
 
-					final Color color = getSelectedColorFromComboBox();
-					final long delay = Long.parseLong(textDelay.getText());
-					final int nodeId = (Integer) table.getValueAt(table.getSelectedRow(), 0);
-					final int stepId = (checkBoxStepId.isSelected()) ? 1 : 0;
+					Color color = getSelectedColorFromComboBox();
+					long delay = Long.parseLong(textDelay.getText());
+					int nodeId = (Integer) table.getValueAt(table.getSelectedRow(), 0);
+					int stepId = (checkBoxStepId.isSelected()) ? 1 : 0;
 					QSYPacket.CommandArgs commandArgs = new QSYPacket.CommandArgs(nodeId, color, delay, stepId);
-					parent.getLibterminal().sendCommand(commandArgs);
+					parent.getTerminal().sendCommand(commandArgs);
+					parent.getSearchPanel().editNode(nodeId, color);
 
-				} catch (final NullPointerException exception) {
+				} catch (NullPointerException exception) {
 					JOptionPane.showMessageDialog(null, "Se debe seleccionar un color", "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (final NumberFormatException exception) {
+				} catch (NumberFormatException exception) {
 					JOptionPane.showMessageDialog(null, "Se debe colocar un n�mero entero de 4 Bytes sin signo.", "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (final IllegalArgumentException exception) {
+				} catch (IllegalArgumentException exception) {
 					JOptionPane.showMessageDialog(null, exception.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (final Exception exception) {
+				} catch (Exception exception) {
 					exception.printStackTrace();
 				}
 			}
@@ -99,7 +91,7 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 	}
 
 	@Override
-	public void setEnabled(final boolean enabled) {
+	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		comboBoxColor.setEnabled(enabled);
 		textDelay.setEnabled(enabled);
@@ -113,7 +105,7 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 	}
 
 	private Color getSelectedColorFromComboBox() throws NullPointerException {
-		final int index = comboBoxColor.getSelectedIndex();
+		int index = comboBoxColor.getSelectedIndex();
 		if (index < 0 || index >= colors.length) {
 			throw new NullPointerException();
 		}

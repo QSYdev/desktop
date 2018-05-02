@@ -28,7 +28,7 @@ public final class StressPanel extends JPanel {
 
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Stress Test"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-		this.terminal = parent.getLibterminal();
+		this.terminal = parent.getTerminal();
 
 		btnStartStressTest = new JButton("Start Stress Test");
 		btnStartStressTest.setEnabled(true);
