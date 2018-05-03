@@ -52,7 +52,8 @@ public final class CustomRoutinePanel extends JPanel {
 					File selectedFile = fileChooser.getSelectedFile();
 					try {
 						// TODO cargar la rutina seleccionada y guardarlo en una variable.
-						txtRoutinePath.setText(selectedFile.getAbsolutePath());
+						// System.out.println(selectedFile.getAbsolutePath());
+						txtRoutinePath.setText(selectedFile.getName());
 						txtRoutineName.setText(""); // TODO llenarlo con la informacion de la variable.
 						txtRoutineNodesCount.setText("0"); // TODO llenarlo con la informacion de la variable.
 						btnChooseRoutine.setEnabled(true);
@@ -130,6 +131,23 @@ public final class CustomRoutinePanel extends JPanel {
 
 		});
 
+	}
+
+	public boolean isRoutineRunning() {
+		return btnStopRoutine.isEnabled();
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		// TODO frenar la rutina.
+		// TODO poner la variable de la rutina en null.
+		txtRoutinePath.setText("");
+		txtRoutineName.setText("");
+		txtRoutineNodesCount.setText("");
+		btnChooseRoutine.setEnabled(enabled);
+		btnStartRoutine.setEnabled(false);
+		btnStopRoutine.setEnabled(false);
+		super.setEnabled(enabled);
 	}
 
 }

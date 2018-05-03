@@ -74,9 +74,7 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				int selectedRow = table.getSelectedRow();
-				boolean enabled = selectedRow != -1;
-
-				parent.getCommandPanel().setEnabled(enabled);
+				parent.getCommandPanel().setEnabled(selectedRow != -1 && !parent.getRoutinePanel().isRoutineRunning());
 			}
 
 		});

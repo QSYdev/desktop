@@ -86,6 +86,10 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		return commandPanel;
 	}
 
+	public CustomRoutinePanel getRoutinePanel() {
+		return routinePanel;
+	}
+
 	public Terminal getTerminal() {
 		return terminal;
 	}
