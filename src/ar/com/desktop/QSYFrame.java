@@ -30,7 +30,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 	private final SearchPanel searchPanel;
 	private final CommandPanel commandPanel;
-	private final RoutinePanel routinePanel;
+	private final CustomRoutinePanel routinePanel;
 	private final StressPanel stressPanel;
 
 	private final Terminal terminal;
@@ -50,7 +50,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 		searchPanel = new SearchPanel(this);
 		commandPanel = new CommandPanel(this);
-		routinePanel = new RoutinePanel(this);
+		routinePanel = new CustomRoutinePanel(this);
 		stressPanel = new StressPanel(this);
 
 		Container rightPane = new Container();
