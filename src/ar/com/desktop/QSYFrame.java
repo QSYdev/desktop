@@ -132,6 +132,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		@Override
 		public void visit(ExternalEvent.Touche event) {
 			System.out.println("El nodo " + event.getToucheArgs().getPhysicalId() + " ha sido tocado");
+			searchPanel.editNode(event.getToucheArgs().getPhysicalId(), Color.NO_COLOR);
 		}
 
 		@Override

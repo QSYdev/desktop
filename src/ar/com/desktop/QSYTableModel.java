@@ -12,6 +12,8 @@ public final class QSYTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final int COLOR_INDEX = 2;
+
 	private static final String[] columnsName = { "ID", "IP Node", "Color" };
 	private final List<Integer> nodes;
 
@@ -37,7 +39,7 @@ public final class QSYTableModel extends DefaultTableModel {
 	public synchronized void editNode(int physicalId, Color color) {
 		int rowToedit = nodes.indexOf(physicalId);
 		if (rowToedit != -1) {
-			setValueAt(color, rowToedit, 2);
+			setValueAt(color, rowToedit, COLOR_INDEX);
 		}
 	}
 
