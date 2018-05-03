@@ -2,7 +2,6 @@ package ar.com.desktop;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,7 +12,7 @@ import ar.com.terminal.internal.Terminal;
 import ar.com.terminal.shared.Color;
 import ar.com.terminal.shared.QSYPacket;
 
-public final class StressPanel extends JPanel {
+public final class StressPanel extends JPanel implements AutoCloseable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,7 +22,7 @@ public final class StressPanel extends JPanel {
 
 	private StressTask stressTask;
 
-	public StressPanel(final QSYFrame parent) {
+	public StressPanel(QSYFrame parent) {
 		this.setLayout(new GridLayout(0, 1, 2, 2));
 
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Prueba de Stress"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -34,29 +33,21 @@ public final class StressPanel extends JPanel {
 		btnStartStressTest.setEnabled(true);
 		this.add(btnStartStressTest);
 
-		btnStartStressTest.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				stressTask = new StressTask();
-				btnStartStressTest.setEnabled(false);
-				btnStopStressTest.setEnabled(true);
-			}
-
-		});
-
 		btnStopStressTest = new JButton("Finalizar Prueba de Stress");
 		btnStopStressTest.setEnabled(false);
 		this.add(btnStopStressTest);
 
-		btnStopStressTest.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				stressTask.close();
-				stressTask = null;
-				btnStopStressTest.setEnabled(false);
-				btnStartStressTest.setEnabled(true);
-			}
+		btnStartStressTest.addActionListener((ActionEvent e) -> {
+			stressTask = new StressTask();
+			btnStartStressTest.setEnabled(false);
+			btnStopStressTest.setEnabled(true);
+		});
+
+		btnStopStressTest.addActionListener((ActionEvent e) -> {
+			stressTask.close();
+			stressTask = null;
+			btnStopStressTest.setEnabled(false);
+			btnStartStressTest.setEnabled(true);
 		});
 
 	}
@@ -69,6 +60,12 @@ public final class StressPanel extends JPanel {
 		stressTask = null;
 		btnStartStressTest.setEnabled(enabled);
 		super.setEnabled(enabled);
+	}
+
+	@Override
+	public void close() {
+		if (stressTask != null)
+			stressTask.close();
 	}
 
 	private final class StressTask implements Runnable, AutoCloseable {
@@ -84,7 +81,7 @@ public final class StressPanel extends JPanel {
 				command[i] = new QSYPacket.CommandArgs(i, Color.CYAN, 500, 3);
 			}
 			this.running = true;
-			this.thread = new Thread(this, "Stress Task");
+			this.thread = new Thread(this, "StressTask");
 			thread.start();
 		}
 

@@ -2,7 +2,6 @@ package ar.com.desktop;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.InetAddress;
 
 import javax.swing.BorderFactory;
@@ -14,7 +13,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import ar.com.terminal.shared.Color;
@@ -57,42 +55,29 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 
 		btnStartSearch = new JButton("Buscar nodos");
 		btnStartSearch.setAlignmentX(CENTER_ALIGNMENT);
-		btnStartSearch.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				parent.getTerminal().searchNodes();
-				btnStopSearch.setVisible(true);
-				btnStartSearch.setVisible(false);
-			}
-		});
-
 		this.add(btnStartSearch);
-
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				int selectedRow = table.getSelectedRow();
-				parent.getCommandPanel().setEnabled(selectedRow != -1 && !parent.getRoutinePanel().isRoutineRunning());
-			}
-
-		});
 
 		btnStopSearch = new JButton("Finalizar la busqueda de nodos");
 		btnStopSearch.setAlignmentX(CENTER_ALIGNMENT);
 		btnStopSearch.setVisible(false);
-		btnStopSearch.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				parent.getTerminal().finalizeNodesSearching();
-				btnStopSearch.setVisible(false);
-				btnStartSearch.setVisible(true);
-			}
-
-		});
 		this.add(btnStopSearch);
+
+		btnStartSearch.addActionListener((ActionEvent e) -> {
+			parent.getTerminal().searchNodes();
+			btnStopSearch.setVisible(true);
+			btnStartSearch.setVisible(false);
+		});
+
+		table.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+			int selectedRow = table.getSelectedRow();
+			parent.getCommandPanel().setEnabled(selectedRow != -1 && !parent.getCustomRoutinePanel().isRoutineRunning());
+		});
+
+		btnStopSearch.addActionListener((ActionEvent e) -> {
+			parent.getTerminal().finalizeNodesSearching();
+			btnStopSearch.setVisible(false);
+			btnStartSearch.setVisible(true);
+		});
 	}
 
 	public JTable getTable() {

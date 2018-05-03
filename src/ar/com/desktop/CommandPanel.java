@@ -3,8 +3,9 @@ package ar.com.desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -21,6 +22,7 @@ import javax.swing.border.CompoundBorder;
 
 import ar.com.terminal.shared.Color;
 import ar.com.terminal.shared.QSYPacket;
+import ar.com.terminal.shared.QSYPacket.CommandArgs;
 
 public final class CommandPanel extends JPanel implements AutoCloseable {
 
@@ -34,14 +36,15 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 		}
 	}
 
+	private final List<CommandTask> commandTasksList;
 	private final JComboBox<String> comboBoxColor;
 	private final JTextField textDelay;
 	private final JCheckBox checkBoxStepId;
 	private final JButton btnSendCommand;
 
 	public CommandPanel(QSYFrame parent) {
+		this.commandTasksList = new LinkedList<>();
 		this.setLayout(new GridLayout(0, 1, 2, 2));
-
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Comando"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		JLabel lblColor = new JLabel("Color:");
@@ -67,30 +70,30 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 		btnSendCommand = new JButton("Enviar comando");
 		this.add(btnSendCommand);
 
-		btnSendCommand.addActionListener(new ActionListener() {
+		btnSendCommand.addActionListener((ActionEvent e) -> {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					JTable table = parent.getSearchPanel().getTable();
+			try {
+				JTable table = parent.getSearchPanel().getTable();
 
-					Color color = getSelectedColorFromComboBox();
-					long delay = Long.parseLong(textDelay.getText());
-					int nodeId = (Integer) table.getValueAt(table.getSelectedRow(), 0);
-					int stepId = (checkBoxStepId.isSelected()) ? 1 : 0;
-					QSYPacket.CommandArgs commandArgs = new QSYPacket.CommandArgs(nodeId, color, delay, stepId);
-					parent.getTerminal().sendCommand(commandArgs);
+				Color color = getSelectedColorFromComboBox();
+				long delay = Long.parseLong(textDelay.getText());
+				int nodeId = (Integer) table.getValueAt(table.getSelectedRow(), 0);
+				int stepId = (checkBoxStepId.isSelected()) ? 1 : 0;
+				QSYPacket.CommandArgs commandArgs = new QSYPacket.CommandArgs(nodeId, color, delay, stepId);
+				parent.getTerminal().sendCommand(commandArgs);
+				if (commandArgs.getDelay() == 0)
 					parent.getSearchPanel().editNode(nodeId, color);
+				else
+					commandTasksList.add(new CommandTask(parent, commandArgs));
 
-				} catch (NullPointerException exception) {
-					JOptionPane.showMessageDialog(null, "Se debe seleccionar un color", "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (NumberFormatException exception) {
-					JOptionPane.showMessageDialog(null, "Se debe colocar un numero entero de 4 Bytes sin signo.", "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (IllegalArgumentException exception) {
-					JOptionPane.showMessageDialog(null, exception.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (Exception exception) {
-					exception.printStackTrace();
-				}
+			} catch (NullPointerException exception) {
+				JOptionPane.showMessageDialog(null, "Se debe seleccionar un color", "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (NumberFormatException exception) {
+				JOptionPane.showMessageDialog(null, "Se debe colocar un numero entero de 4 Bytes sin signo.", "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (IllegalArgumentException exception) {
+				JOptionPane.showMessageDialog(null, exception.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (Exception exception) {
+				exception.printStackTrace();
 			}
 		});
 
@@ -98,6 +101,8 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 
 	@Override
 	public void setEnabled(boolean enabled) {
+		for (CommandTask commandTask : commandTasksList)
+			commandTask.close();
 		comboBoxColor.setEnabled(enabled);
 		textDelay.setEnabled(enabled);
 		checkBoxStepId.setEnabled(enabled);
@@ -120,6 +125,42 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 
 	@Override
 	public void close() {
-		return;
+		for (CommandTask commandTask : commandTasksList)
+			commandTask.close();
 	}
+
+	private final class CommandTask implements Runnable, AutoCloseable {
+
+		private final QSYFrame parent;
+		private final CommandArgs commandArgs;
+		private final Thread thread;
+
+		public CommandTask(QSYFrame parent, CommandArgs commandArgs) {
+			this.parent = parent;
+			this.commandArgs = commandArgs;
+			this.thread = new Thread(this, "CommandTask");
+			thread.start();
+		}
+
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(commandArgs.getDelay());
+				parent.getSearchPanel().editNode(commandArgs.getPhysicialId(), commandArgs.getColor());
+			} catch (InterruptedException e) {
+			}
+		}
+
+		@Override
+		public void close() {
+			thread.interrupt();
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 }

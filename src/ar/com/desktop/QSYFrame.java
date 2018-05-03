@@ -3,6 +3,8 @@ package ar.com.desktop;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -30,7 +32,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 	private final SearchPanel searchPanel;
 	private final CommandPanel commandPanel;
-	private final CustomRoutinePanel routinePanel;
+	private final CustomRoutinePanel customRoutinePanel;
 	private final StressPanel stressPanel;
 
 	private final Terminal terminal;
@@ -50,7 +52,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 		searchPanel = new SearchPanel(this);
 		commandPanel = new CommandPanel(this);
-		routinePanel = new CustomRoutinePanel(this);
+		customRoutinePanel = new CustomRoutinePanel(this);
 		stressPanel = new StressPanel(this);
 
 		Container rightPane = new Container();
@@ -58,7 +60,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		rightPane.add(commandPanel);
 		rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0, Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
 
-		rightPane.add(routinePanel);
+		rightPane.add(customRoutinePanel);
 		rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0, Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
 
 		rightPane.add(stressPanel);
@@ -86,8 +88,8 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		return commandPanel;
 	}
 
-	public CustomRoutinePanel getRoutinePanel() {
-		return routinePanel;
+	public CustomRoutinePanel getCustomRoutinePanel() {
+		return customRoutinePanel;
 	}
 
 	public Terminal getTerminal() {
@@ -102,6 +104,8 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 	public void close() {
 		searchPanel.close();
 		commandPanel.close();
+		customRoutinePanel.close();
+		stressPanel.close();
 		eventHandler.close();
 	}
 
@@ -163,6 +167,21 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static void main(final String[] args) throws Exception {
+		Terminal terminal = new Terminal("192.168.1.112");
+
+		QSYFrame view = new QSYFrame(terminal);
+		terminal.addListener(view.getEventHandler());
+		view.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				view.close();
+				terminal.close();
+			}
+		});
+		terminal.start();
 	}
 
 }
