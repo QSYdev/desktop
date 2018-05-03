@@ -72,6 +72,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		commandPanel.setEnabled(false);
+		stressPanel.setEnabled(false);
 
 		this.eventHandler = new EventHandler();
 		setVisible(true);
@@ -103,7 +104,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 	private final class EventHandler extends EventListener<ExternalEvent> implements Runnable, ExternalEventVisitor, AutoCloseable {
 
 		private final Thread thread;
-		private boolean running;
+		private volatile boolean running;
 
 		public EventHandler() {
 			this.running = true;
@@ -131,7 +132,6 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 		@Override
 		public void visit(ExternalEvent.Touche event) {
-			System.out.println("El nodo " + event.getToucheArgs().getPhysicalId() + " ha sido tocado");
 			searchPanel.editNode(event.getToucheArgs().getPhysicalId(), Color.NO_COLOR);
 		}
 

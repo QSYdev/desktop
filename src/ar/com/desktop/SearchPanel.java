@@ -1,5 +1,6 @@
 package ar.com.desktop;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
@@ -29,12 +30,19 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 	private final QSYTableModel model;
 
 	public SearchPanel(QSYFrame parent) {
-		this.setBorder(BorderFactory.createTitledBorder("Nodes"));
+		this.setBorder(BorderFactory.createTitledBorder("Nodos"));
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		table = new JTable(new QSYTableModel());
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFillsViewportHeight(true);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setResizingAllowed(false);
+
+		Dimension tableSize = table.getPreferredSize();
+		table.getColumnModel().getColumn(0).setPreferredWidth(Math.round(tableSize.width * 0.15f));
+		table.getColumnModel().getColumn(1).setPreferredWidth(Math.round(tableSize.width * 0.45f));
+		table.getColumnModel().getColumn(2).setPreferredWidth(Math.round(tableSize.width * 0.40f));
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -47,7 +55,7 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 
 		model = (QSYTableModel) table.getModel();
 
-		btnStartSearch = new JButton("Search Nodes");
+		btnStartSearch = new JButton("Buscar nodos");
 		btnStartSearch.setAlignmentX(CENTER_ALIGNMENT);
 		btnStartSearch.addActionListener(new ActionListener() {
 
@@ -73,7 +81,7 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 
 		});
 
-		btnStopSearch = new JButton("Finalize Nodes Searching");
+		btnStopSearch = new JButton("Finalizar la busqueda de nodos");
 		btnStopSearch.setAlignmentX(CENTER_ALIGNMENT);
 		btnStopSearch.setVisible(false);
 		btnStopSearch.addActionListener(new ActionListener() {

@@ -26,11 +26,11 @@ public final class StressPanel extends JPanel {
 	public StressPanel(final QSYFrame parent) {
 		this.setLayout(new GridLayout(0, 1, 2, 2));
 
-		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Stress Test"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Prueba de Stress"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		this.terminal = parent.getTerminal();
 
-		btnStartStressTest = new JButton("Start Stress Test");
+		btnStartStressTest = new JButton("Iniciar Prueba de Stress");
 		btnStartStressTest.setEnabled(true);
 		this.add(btnStartStressTest);
 
@@ -45,7 +45,7 @@ public final class StressPanel extends JPanel {
 
 		});
 
-		btnStopStressTest = new JButton("Stop Stress Test");
+		btnStopStressTest = new JButton("Finalizar Prueba de Stress");
 		btnStopStressTest.setEnabled(false);
 		this.add(btnStopStressTest);
 
@@ -61,11 +61,21 @@ public final class StressPanel extends JPanel {
 
 	}
 
+	@Override
+	public void setEnabled(boolean enabled) {
+		btnStopStressTest.setEnabled(false);
+		if (stressTask != null)
+			stressTask.close();
+		stressTask = null;
+		btnStartStressTest.setEnabled(enabled);
+		super.setEnabled(enabled);
+	}
+
 	private final class StressTask implements Runnable, AutoCloseable {
 
 		private final QSYPacket.CommandArgs[] command;
 
-		private boolean running;
+		private volatile boolean running;
 		private final Thread thread;
 
 		public StressTask() {

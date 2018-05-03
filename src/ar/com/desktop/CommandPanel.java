@@ -25,8 +25,14 @@ import ar.com.terminal.shared.QSYPacket;
 public final class CommandPanel extends JPanel implements AutoCloseable {
 
 	private static final long serialVersionUID = 1L;
-	private static final String[] comboBoxPosibilites = { "No Color", "Red", "Green", "Blue", "Cyan", "Magenta", "Yellow", "White" };
 	private static final Color[] colors = { Color.NO_COLOR, Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.WHITE };
+	private static final String[] comboBoxPosibilites;
+	static {
+		comboBoxPosibilites = new String[colors.length];
+		for (int i = 0; i < colors.length; i++) {
+			comboBoxPosibilites[i] = colors[i].toString();
+		}
+	}
 
 	private final JComboBox<String> comboBoxColor;
 	private final JTextField textDelay;
@@ -36,7 +42,7 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 	public CommandPanel(QSYFrame parent) {
 		this.setLayout(new GridLayout(0, 1, 2, 2));
 
-		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Command"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Comando"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		JLabel lblColor = new JLabel("Color:");
 		this.add(lblColor);
@@ -58,7 +64,7 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 		checkBoxStepId.setMnemonic(KeyEvent.VK_A);
 		this.add(checkBoxStepId);
 
-		btnSendCommand = new JButton("Send Command");
+		btnSendCommand = new JButton("Enviar comando");
 		this.add(btnSendCommand);
 
 		btnSendCommand.addActionListener(new ActionListener() {
@@ -79,7 +85,7 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 				} catch (NullPointerException exception) {
 					JOptionPane.showMessageDialog(null, "Se debe seleccionar un color", "Error", JOptionPane.ERROR_MESSAGE);
 				} catch (NumberFormatException exception) {
-					JOptionPane.showMessageDialog(null, "Se debe colocar un n�mero entero de 4 Bytes sin signo.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Se debe colocar un numero entero de 4 Bytes sin signo.", "Error", JOptionPane.ERROR_MESSAGE);
 				} catch (IllegalArgumentException exception) {
 					JOptionPane.showMessageDialog(null, exception.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				} catch (Exception exception) {
@@ -92,7 +98,6 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
 		comboBoxColor.setEnabled(enabled);
 		textDelay.setEnabled(enabled);
 		checkBoxStepId.setEnabled(enabled);
@@ -102,6 +107,7 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 			comboBoxColor.setSelectedIndex(0);
 			textDelay.setText("0");
 		}
+		super.setEnabled(enabled);
 	}
 
 	private Color getSelectedColorFromComboBox() throws NullPointerException {

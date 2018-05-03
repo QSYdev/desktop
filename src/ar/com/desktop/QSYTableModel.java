@@ -14,7 +14,7 @@ public final class QSYTableModel extends DefaultTableModel {
 
 	private static final int COLOR_INDEX = 2;
 
-	private static final String[] columnsName = { "ID", "IP Node", "Color" };
+	private static final String[] columnsName = { "ID", "IP", "Color" };
 	private final List<Integer> nodes;
 
 	public QSYTableModel() {
