@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import ar.com.terminal.shared.Color;
+import ar.com.terminal.internal.Color;
 
 public final class QSYTableModel extends DefaultTableModel {
 

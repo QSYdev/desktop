@@ -15,11 +15,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import ar.com.terminal.internal.Color;
+import ar.com.terminal.internal.Event.ExternalEvent;
+import ar.com.terminal.internal.Event.ExternalEvent.ExternalEventVisitor;
+import ar.com.terminal.internal.EventListener;
 import ar.com.terminal.internal.Terminal;
-import ar.com.terminal.shared.Color;
-import ar.com.terminal.shared.EventListener;
-import ar.com.terminal.shared.ExternalEvent;
-import ar.com.terminal.shared.ExternalEventVisitor;
 
 public final class QSYFrame extends JFrame implements AutoCloseable {
 
@@ -28,7 +28,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 	private static final int WIDTH = 550;
 	private static final int HEIGHT = 600;
 
-	private final EventHandler eventHandler;
+	private final ExternalEventHandler eventHandler;
 
 	private final SearchPanel searchPanel;
 	private final CommandPanel commandPanel;
@@ -76,7 +76,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		commandPanel.setEnabled(false);
 		stressPanel.setEnabled(false);
 
-		this.eventHandler = new EventHandler();
+		this.eventHandler = new ExternalEventHandler();
 		setVisible(true);
 	}
 
@@ -96,7 +96,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		return terminal;
 	}
 
-	public EventHandler getEventHandler() {
+	public ExternalEventHandler getEventHandler() {
 		return eventHandler;
 	}
 
@@ -109,15 +109,15 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		eventHandler.close();
 	}
 
-	private final class EventHandler extends EventListener<ExternalEvent> implements Runnable, ExternalEventVisitor, AutoCloseable {
+	private final class ExternalEventHandler extends EventListener<ExternalEvent> implements Runnable, ExternalEventVisitor, AutoCloseable {
 
 		private final Thread thread;
 		private volatile boolean running;
 
-		public EventHandler() {
+		public ExternalEventHandler() {
 			this.running = true;
 
-			this.thread = new Thread(this, "View Task");
+			this.thread = new Thread(this, "ExternalEventHandler");
 			thread.start();
 		}
 
@@ -126,11 +126,8 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 			while (running) {
 				try {
 					ExternalEvent event = getEvent();
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							event.accept(EventHandler.this);
-						}
+					SwingUtilities.invokeLater(() -> {
+						event.accept(ExternalEventHandler.this);
 					});
 				} catch (InterruptedException e) {
 					running = false;
@@ -139,23 +136,21 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		}
 
 		@Override
-		public void visit(ExternalEvent.Touche event) {
-			searchPanel.editNode(event.getToucheArgs().getPhysicalId(), Color.NO_COLOR);
+		public void visit(ExternalEvent.ConnectedNode event) {
+			searchPanel.connectedNode(event.getPhysicalId(), event.getNodeAddress(), Color.NO_COLOR);
+			commandPanel.connectedNode(event.getPhysicalId());
 		}
 
 		@Override
-		public void visit(ExternalEvent.ConnectedNode event) {
-			searchPanel.addNewNode(event.getPhysicalId(), event.getNodeAddress(), Color.NO_COLOR);
+		public void visit(ExternalEvent.Touche event) {
+			searchPanel.touche(event.getToucheArgs().getPhysicalId(), Color.NO_COLOR);
+			commandPanel.touche(event.getToucheArgs().getPhysicalId());
 		}
 
 		@Override
 		public void visit(ExternalEvent.DisconnectedNode event) {
-			searchPanel.removeNode(event.getPhysicalId());
-		}
-
-		@Override
-		public void visit(ExternalEvent.InternalException event) {
-			event.getException().printStackTrace();
+			searchPanel.disconnectedNode(event.getPhysicalId());
+			commandPanel.disconnectedNode(event.getPhysicalId());
 		}
 
 		@Override
@@ -169,7 +164,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		}
 	}
 
-	public static void main(final String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		Terminal terminal = new Terminal("192.168.1.112");
 
 		QSYFrame view = new QSYFrame(terminal);

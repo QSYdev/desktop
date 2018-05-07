@@ -4,8 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -20,9 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 
-import ar.com.terminal.shared.Color;
-import ar.com.terminal.shared.QSYPacket;
-import ar.com.terminal.shared.QSYPacket.CommandArgs;
+import ar.com.terminal.internal.Color;
+import ar.com.terminal.internal.QSYPacket;
+import ar.com.terminal.internal.QSYPacket.CommandArgs;
 
 public final class CommandPanel extends JPanel implements AutoCloseable {
 
@@ -36,14 +35,14 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 		}
 	}
 
-	private final List<CommandTask> commandTasksList;
+	private final TreeMap<Integer, CommandTask> commandTasksList;
 	private final JComboBox<String> comboBoxColor;
 	private final JTextField textDelay;
 	private final JCheckBox checkBoxStepId;
 	private final JButton btnSendCommand;
 
 	public CommandPanel(QSYFrame parent) {
-		this.commandTasksList = new LinkedList<>();
+		this.commandTasksList = new TreeMap<>();
 		this.setLayout(new GridLayout(0, 1, 2, 2));
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Comando"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
@@ -82,7 +81,7 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 				QSYPacket.CommandArgs commandArgs = new QSYPacket.CommandArgs(nodeId, color, delay, stepId);
 				parent.getTerminal().sendCommand(commandArgs);
 				if (commandArgs.getDelay() == 0)
-					parent.getSearchPanel().editNode(nodeId, color);
+					parent.getSearchPanel().touche(nodeId, color);
 				else
 					commandTasksList.add(new CommandTask(parent, commandArgs));
 
@@ -113,6 +112,18 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 			textDelay.setText("0");
 		}
 		super.setEnabled(enabled);
+	}
+
+	public void connectedNode(int physicalId) {
+
+	}
+
+	public void touche(int physicalId) {
+
+	}
+
+	public void disconnectedNode(int physicalId) {
+
 	}
 
 	private Color getSelectedColorFromComboBox() throws NullPointerException {
@@ -146,7 +157,7 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 		public void run() {
 			try {
 				Thread.sleep(commandArgs.getDelay());
-				parent.getSearchPanel().editNode(commandArgs.getPhysicialId(), commandArgs.getColor());
+				parent.getSearchPanel().touche(commandArgs.getPhysicialId(), commandArgs.getColor());
 			} catch (InterruptedException e) {
 			}
 		}

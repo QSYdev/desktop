@@ -15,7 +15,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import ar.com.terminal.shared.Color;
+import ar.com.terminal.internal.Color;
 
 public final class SearchPanel extends JPanel implements AutoCloseable {
 
@@ -84,15 +84,15 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 		return table;
 	}
 
-	public void addNewNode(int physicalId, InetAddress nodeAddress, Color color) {
+	public void connectedNode(int physicalId, InetAddress nodeAddress, Color color) {
 		model.addNode(physicalId, nodeAddress, color);
 	}
 
-	public void editNode(int physicalId, Color color) {
+	public void touche(int physicalId, Color color) {
 		model.editNode(physicalId, color);
 	}
 
-	public void removeNode(int physicalId) {
+	public void disconnectedNode(int physicalId) {
 		model.removeNode(physicalId);
 	}
 
