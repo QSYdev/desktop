@@ -19,9 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 
-import ar.com.terminal.internal.Color;
-import ar.com.terminal.internal.QSYPacket;
-import ar.com.terminal.internal.QSYPacket.CommandArgs;
+import ar.com.terminal.Color;
+import ar.com.terminal.QSYPacket;
+import ar.com.terminal.QSYPacket.CommandArgs;
 
 public final class CommandPanel extends JPanel implements AutoCloseable {
 

@@ -15,7 +15,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import ar.com.terminal.internal.Color;
+import ar.com.terminal.Color;
 
 public final class SearchPanel extends JPanel implements AutoCloseable {
 

@@ -8,9 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 
-import ar.com.terminal.internal.Color;
-import ar.com.terminal.internal.QSYPacket;
-import ar.com.terminal.internal.Terminal;
+import ar.com.terminal.Color;
+import ar.com.terminal.QSYPacket;
+import ar.com.terminal.Terminal;
 
 public final class StressPanel extends JPanel implements AutoCloseable {
 

@@ -15,11 +15,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import ar.com.terminal.internal.Color;
-import ar.com.terminal.internal.Event.ExternalEvent;
-import ar.com.terminal.internal.Event.ExternalEvent.ExternalEventVisitor;
-import ar.com.terminal.internal.EventListener;
-import ar.com.terminal.internal.Terminal;
+import ar.com.terminal.Color;
+import ar.com.terminal.Event.ExternalEvent;
+import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
+import ar.com.terminal.EventListener;
+import ar.com.terminal.Terminal;
 
 public final class QSYFrame extends JFrame implements AutoCloseable {
 
