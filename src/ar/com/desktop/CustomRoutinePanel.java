@@ -15,11 +15,16 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+import ar.com.terminal.Routine;
+import ar.com.terminal.RoutineManager;
+import ar.com.terminal.Terminal;
+
 public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 
 	private static final long serialVersionUID = 1L;
 	private static final File ROOT_FILE = FileSystemView.getFileSystemView().createFileObject("resources");
 
+	private final Terminal terminal;
 	private final JFileChooser fileChooser;
 	private final JButton btnChooseRoutine;
 	private final JTextField txtRoutinePath;
@@ -28,7 +33,11 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 	private final JButton btnStartRoutine;
 	private final JButton btnStopRoutine;
 
+	private Routine routine;
+
 	public CustomRoutinePanel(QSYFrame parent) {
+		this.terminal = parent.getTerminal();
+
 		this.setLayout(new GridLayout(0, 1, 2, 2));
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Rutina Personalizada"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
@@ -77,44 +86,43 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 			if (result == JFileChooser.APPROVE_OPTION) {
 				File selectedFile = fileChooser.getSelectedFile();
 				try {
-					// TODO cargar la rutina seleccionada y guardarlo en una variable.
-					// System.out.println(selectedFile.getAbsolutePath());
+					routine = RoutineManager.loadRoutine(selectedFile.getAbsolutePath());
 					txtRoutinePath.setText(selectedFile.getName());
-					txtRoutineName.setText(""); // TODO llenarlo con la informacion de la variable.
-					txtRoutineNodesCount.setText("0"); // TODO llenarlo con la informacion de la variable.
+					txtRoutineName.setText(routine.getName());
+					txtRoutineNodesCount.setText("" + routine.getNumberOfNodes());
 					btnChooseRoutine.setEnabled(true);
 					btnStartRoutine.setEnabled(true);
 					btnStopRoutine.setEnabled(false);
 				} catch (IllegalArgumentException e) {
 					JOptionPane.showMessageDialog(null, "Se debe seleccionar una rutina valida", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
 
 		btnStartRoutine.addActionListener((ActionEvent event) -> {
 			try {
-				// TODO iniciar la rutina guardada en la variable.
+				parent.getTerminal().startCustomRoutine(routine);
 				btnChooseRoutine.setEnabled(false);
 				btnStartRoutine.setEnabled(false);
 				btnStopRoutine.setEnabled(true);
 			} catch (IllegalArgumentException e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 
 		btnStopRoutine.addActionListener((ActionEvent event) -> {
-			try {
-				// TODO frenar la rutina.
-				// TODO poner la variable de la rutina en null.
-				txtRoutinePath.setText("");
-				txtRoutineName.setText("");
-				txtRoutineNodesCount.setText("");
-				btnChooseRoutine.setEnabled(true);
-				btnStartRoutine.setEnabled(false);
-				btnStopRoutine.setEnabled(false);
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			}
+			parent.getTerminal().stopRoutine();
+			routine = null;
+			txtRoutinePath.setText("");
+			txtRoutineName.setText("");
+			txtRoutineNodesCount.setText("");
+			btnChooseRoutine.setEnabled(true);
+			btnStartRoutine.setEnabled(false);
+			btnStopRoutine.setEnabled(false);
 		});
 
 	}
@@ -125,8 +133,8 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		// TODO frenar la rutina.
-		// TODO poner la variable de la rutina en null.
+		terminal.stopRoutine();
+		routine = null;
 		txtRoutinePath.setText("");
 		txtRoutineName.setText("");
 		txtRoutineNodesCount.setText("");
