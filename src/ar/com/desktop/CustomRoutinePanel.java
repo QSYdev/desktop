@@ -47,7 +47,6 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 		fileChooser.setFileFilter(new FileNameExtensionFilter("Archivo en formato JSON", "json"));
 
 		btnChooseRoutine = new JButton("Seleccionar...");
-		btnChooseRoutine.setEnabled(true);
 		this.add(btnChooseRoutine);
 
 		txtRoutinePath = new JTextField();
@@ -63,7 +62,6 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 
 		JPanel routineInfoPanel = new JPanel();
 		routineInfoPanel.setLayout(new GridLayout(0, 2, 2, 2));
-		this.add(routineInfoPanel);
 
 		JLabel lblRoutineNodesCount = new JLabel("Nodos : ");
 		routineInfoPanel.add(lblRoutineNodesCount);
@@ -71,13 +69,12 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 		txtRoutineNodesCount = new JTextField();
 		txtRoutineNodesCount.setEnabled(false);
 		routineInfoPanel.add(txtRoutineNodesCount);
+		this.add(routineInfoPanel);
 
 		btnStartRoutine = new JButton("Empezar Rutina");
-		btnStartRoutine.setEnabled(false);
 		this.add(btnStartRoutine);
 
 		btnStopRoutine = new JButton("Terminar Rutina");
-		btnStopRoutine.setEnabled(false);
 		this.add(btnStopRoutine);
 
 		btnChooseRoutine.addActionListener((ActionEvent event) -> {
@@ -96,7 +93,7 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 				} catch (IllegalArgumentException e) {
 					JOptionPane.showMessageDialog(null, "Se debe seleccionar una rutina valida", "Error", JOptionPane.ERROR_MESSAGE);
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -107,10 +104,8 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 				btnChooseRoutine.setEnabled(false);
 				btnStartRoutine.setEnabled(false);
 				btnStopRoutine.setEnabled(true);
-			} catch (IllegalArgumentException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (Exception e) {
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 
@@ -125,10 +120,6 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 			btnStopRoutine.setEnabled(false);
 		});
 
-	}
-
-	public boolean isRoutineRunning() {
-		return btnStopRoutine.isEnabled();
 	}
 
 	@Override

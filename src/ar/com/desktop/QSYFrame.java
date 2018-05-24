@@ -33,7 +33,6 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 	private final SearchPanel searchPanel;
 	private final CommandPanel commandPanel;
 	private final CustomRoutinePanel customRoutinePanel;
-	private final StressPanel stressPanel;
 
 	private final Terminal terminal;
 
@@ -53,7 +52,6 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		searchPanel = new SearchPanel(this);
 		commandPanel = new CommandPanel(this);
 		customRoutinePanel = new CustomRoutinePanel(this);
-		stressPanel = new StressPanel(this);
 
 		Container rightPane = new Container();
 		rightPane.setLayout(new BoxLayout(rightPane, BoxLayout.Y_AXIS));
@@ -63,9 +61,6 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		rightPane.add(customRoutinePanel);
 		rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0, Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
 
-		rightPane.add(stressPanel);
-		rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0, Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
-
 		JPanel contentPane = (JPanel) this.getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
@@ -73,8 +68,9 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		contentPane.add(rightPane, BorderLayout.EAST);
 		contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
+		searchPanel.setEnabled(true);
 		commandPanel.setEnabled(false);
-		stressPanel.setEnabled(false);
+		customRoutinePanel.setEnabled(true);
 
 		this.eventHandler = new ExternalEventHandler();
 		setVisible(true);
@@ -105,7 +101,6 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		searchPanel.close();
 		commandPanel.close();
 		customRoutinePanel.close();
-		stressPanel.close();
 		eventHandler.close();
 	}
 
@@ -116,7 +111,6 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 		public ExternalEventHandler() {
 			this.running = true;
-
 			this.thread = new Thread(this, "ExternalEventHandler");
 			thread.start();
 		}
@@ -138,19 +132,11 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		@Override
 		public void visit(ExternalEvent.ConnectedNode event) {
 			searchPanel.connectedNode(event.getPhysicalId(), event.getNodeAddress(), Color.NO_COLOR);
-			commandPanel.connectedNode(event.getPhysicalId());
-		}
-
-		@Override
-		public void visit(ExternalEvent.Touche event) {
-			searchPanel.touche(event.getToucheArgs().getPhysicalId(), Color.NO_COLOR);
-			commandPanel.touche(event.getToucheArgs().getPhysicalId());
 		}
 
 		@Override
 		public void visit(ExternalEvent.DisconnectedNode event) {
 			searchPanel.disconnectedNode(event.getPhysicalId());
-			commandPanel.disconnectedNode(event.getPhysicalId());
 		}
 
 		@Override
