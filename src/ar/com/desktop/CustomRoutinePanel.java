@@ -24,7 +24,6 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 	private static final long serialVersionUID = 1L;
 	private static final File ROOT_FILE = FileSystemView.getFileSystemView().createFileObject("resources");
 
-	private final Terminal terminal;
 	private final JFileChooser fileChooser;
 	private final JButton btnChooseRoutine;
 	private final JTextField txtRoutinePath;
@@ -33,6 +32,7 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 	private final JButton btnStartRoutine;
 	private final JButton btnStopRoutine;
 
+	private final Terminal terminal;
 	private Routine routine;
 
 	public CustomRoutinePanel(QSYFrame parent) {
@@ -137,6 +137,7 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 
 	@Override
 	public void close() {
+		terminal.stopRoutine();
 	}
 
 }

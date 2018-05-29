@@ -33,6 +33,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 	private final SearchPanel searchPanel;
 	private final CommandPanel commandPanel;
 	private final CustomRoutinePanel customRoutinePanel;
+	private final PlayerExecutionPanel playerExecutionPanel;
 
 	private final Terminal terminal;
 
@@ -52,6 +53,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		searchPanel = new SearchPanel(this);
 		commandPanel = new CommandPanel(this);
 		customRoutinePanel = new CustomRoutinePanel(this);
+		playerExecutionPanel = new PlayerExecutionPanel(this);
 
 		Container rightPane = new Container();
 		rightPane.setLayout(new BoxLayout(rightPane, BoxLayout.Y_AXIS));
@@ -60,6 +62,10 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 		rightPane.add(customRoutinePanel);
 		rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0, Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
+
+		// rightPane.add(playerExecutionPanel);
+		// rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0,
+		// Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
 
 		JPanel contentPane = (JPanel) this.getContentPane();
 		contentPane.setLayout(new BorderLayout());
@@ -71,6 +77,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		searchPanel.setEnabled(true);
 		commandPanel.setEnabled(false);
 		customRoutinePanel.setEnabled(true);
+		playerExecutionPanel.setEnabled(true);
 
 		this.eventHandler = new ExternalEventHandler();
 		setVisible(true);

@@ -32,7 +32,7 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 	private final JButton btnSendCommand;
 
 	public CommandPanel(QSYFrame parent) {
-		this.setLayout(new GridLayout(0, 1, 2, 2));
+		this.setLayout(new GridLayout(0, 2, 2, 2));
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Comando"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		JLabel lblColor = new JLabel("Color:");
