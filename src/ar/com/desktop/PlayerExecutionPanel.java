@@ -1,7 +1,7 @@
 package ar.com.desktop;
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
@@ -36,34 +36,92 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable 
 	public PlayerExecutionPanel(QSYFrame parent) {
 		this.terminal = parent.getTerminal();
 
-		this.setLayout(new GridLayout(0, 1, 2, 2));
+		this.setLayout(new GridBagLayout());
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Rutina Aleatoria"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-		JPanel doublePanel = new JPanel(new FlowLayout());
-		doublePanel.add(new JLabel("Nodos :"));
-		doublePanel.add(txtNodesCount = new JTextField(10));
-		add(doublePanel);
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1;
 
-		add(checkBoxWaitForAllPlayers = new JCheckBox("Esperar"));
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		c.weightx = 0;
+		this.add(new JLabel("Nodos"), c);
 
-		doublePanel = new JPanel(new GridLayout(0, 2));
-		doublePanel.add(new JLabel("Delay"));
-		doublePanel.add(txtStepDelay = new JTextField());
-		doublePanel.add(new JLabel("TimeOut por paso"));
-		doublePanel.add(txtStepTimeOut = new JTextField());
-		add(doublePanel);
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		this.add(txtNodesCount = new JTextField("0"), c);
 
-		add(checkBoxStopOnStepTimeOut = new JCheckBox("Frenar ante un time out"));
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 3;
+		this.add(checkBoxWaitForAllPlayers = new JCheckBox("Esperar a todos los jugadores"), c);
 
-		doublePanel = new JPanel(new GridLayout(0, 2));
-		doublePanel.add(new JLabel("Numero de pasos"));
-		doublePanel.add(txtNumberOfSteps = new JTextField());
-		doublePanel.add(new JLabel("TimeOut total"));
-		doublePanel.add(txtExecutionTimeOut = new JTextField());
-		add(doublePanel);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 1;
+		c.weightx = 0;
+		this.add(new JLabel("Delay"), c);
 
-		add(btnStartExecution = new JButton("Empezar Rutina"));
-		add(btnStopExecution = new JButton("Finalizar Rutina"));
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		this.add(txtStepDelay = new JTextField("0"), c);
+
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 1;
+		c.weightx = 0;
+		this.add(new JLabel("StepTimeOut"), c);
+
+		c.gridx = 1;
+		c.gridy = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		this.add(txtStepTimeOut = new JTextField("0"), c);
+
+		c.gridx = 0;
+		c.gridy = 4;
+		c.gridwidth = 3;
+		this.add(checkBoxStopOnStepTimeOut = new JCheckBox("Frenar ante un time out"), c);
+
+		c.gridx = 0;
+		c.gridy = 5;
+		c.gridwidth = 1;
+		c.weightx = 0;
+		this.add(new JLabel("Steps"), c);
+
+		c.gridx = 1;
+		c.gridy = 5;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		this.add(txtNumberOfSteps = new JTextField("0"), c);
+
+		c.gridx = 0;
+		c.gridy = 6;
+		c.gridwidth = 1;
+		c.weightx = 0;
+		this.add(new JLabel("TimeOut total"), c);
+
+		c.gridx = 1;
+		c.gridy = 6;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		this.add(txtExecutionTimeOut = new JTextField("0"), c);
+
+		c.gridx = 0;
+		c.gridy = 7;
+		c.gridwidth = 3;
+		this.add(btnStartExecution = new JButton("Empezar Rutina"), c);
+
+		c.gridx = 0;
+		c.gridy = 8;
+		c.gridwidth = 3;
+		this.add(btnStopExecution = new JButton("Finalizar Rutina"), c);
 
 		btnStartExecution.addActionListener((ActionEvent event) -> {
 			try {
@@ -79,6 +137,8 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable 
 				terminal.startPlayerExecution(numberOfNodes, playersAndColors, waitForAllPlayers, stepDelay, stepTimeOut, stopOnStepTimeOut, numberOfSteps, executionTimeOut);
 				btnStartExecution.setEnabled(false);
 				btnStopExecution.setEnabled(true);
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Se debe seleccionar un numero entero", "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
@@ -102,12 +162,12 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable 
 		txtNumberOfSteps.setEnabled(enabled);
 		btnStartExecution.setEnabled(enabled);
 		btnStopExecution.setEnabled(false);
-		txtNodesCount.setText("");
+		txtNodesCount.setText("0");
 		checkBoxWaitForAllPlayers.setSelected(false);
-		txtStepDelay.setText("");
-		txtStepTimeOut.setText("");
+		txtStepDelay.setText("0");
+		txtStepTimeOut.setText("0");
 		checkBoxStopOnStepTimeOut.setSelected(false);
-		txtNumberOfSteps.setText("");
+		txtNumberOfSteps.setText("0");
 		super.setEnabled(enabled);
 	}
 

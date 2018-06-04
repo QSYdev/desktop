@@ -1,6 +1,7 @@
 package ar.com.desktop;
 
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
@@ -27,7 +28,6 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 	private final JFileChooser fileChooser;
 	private final JButton btnChooseRoutine;
 	private final JTextField txtRoutinePath;
-	private final JTextField txtRoutineName;
 	private final JTextField txtRoutineNodesCount;
 	private final JButton btnStartRoutine;
 	private final JButton btnStopRoutine;
@@ -38,7 +38,7 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 	public CustomRoutinePanel(QSYFrame parent) {
 		this.terminal = parent.getTerminal();
 
-		this.setLayout(new GridLayout(0, 1, 2, 2));
+		this.setLayout(new GridBagLayout());
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Rutina Personalizada"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		fileChooser = new JFileChooser();
@@ -46,36 +46,43 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setFileFilter(new FileNameExtensionFilter("Archivo en formato JSON", "json"));
 
-		btnChooseRoutine = new JButton("Seleccionar...");
-		this.add(btnChooseRoutine);
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1;
 
-		txtRoutinePath = new JTextField();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 3;
+		this.add(btnChooseRoutine = new JButton("Seleccionar..."), c);
+
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 3;
+		this.add(txtRoutinePath = new JTextField(), c);
 		txtRoutinePath.setEnabled(false);
-		this.add(txtRoutinePath);
 
-		JLabel lblRoutineName = new JLabel("Nombre : ");
-		this.add(lblRoutineName);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 1;
+		c.weightx = 0;
+		this.add(new JLabel("Nodos"), c);
 
-		txtRoutineName = new JTextField();
-		txtRoutineName.setEnabled(false);
-		this.add(txtRoutineName);
-
-		JPanel routineInfoPanel = new JPanel();
-		routineInfoPanel.setLayout(new GridLayout(0, 2, 2, 2));
-
-		JLabel lblRoutineNodesCount = new JLabel("Nodos : ");
-		routineInfoPanel.add(lblRoutineNodesCount);
-
-		txtRoutineNodesCount = new JTextField();
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		this.add(txtRoutineNodesCount = new JTextField(), c);
 		txtRoutineNodesCount.setEnabled(false);
-		routineInfoPanel.add(txtRoutineNodesCount);
-		this.add(routineInfoPanel);
 
-		btnStartRoutine = new JButton("Empezar Rutina");
-		this.add(btnStartRoutine);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 3;
+		this.add(btnStartRoutine = new JButton("Empezar Rutina"), c);
 
-		btnStopRoutine = new JButton("Terminar Rutina");
-		this.add(btnStopRoutine);
+		c.gridx = 0;
+		c.gridy = 4;
+		c.gridwidth = 3;
+		this.add(btnStopRoutine = new JButton("Finalizar Rutina"), c);
 
 		btnChooseRoutine.addActionListener((ActionEvent event) -> {
 			fileChooser.setCurrentDirectory(ROOT_FILE);
@@ -85,7 +92,6 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 				try {
 					routine = RoutineManager.loadRoutine(selectedFile.getAbsolutePath());
 					txtRoutinePath.setText(selectedFile.getName());
-					txtRoutineName.setText(routine.getName());
 					txtRoutineNodesCount.setText("" + routine.getNumberOfNodes());
 					btnChooseRoutine.setEnabled(true);
 					btnStartRoutine.setEnabled(true);
@@ -113,7 +119,6 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 			parent.getTerminal().stopRoutine();
 			routine = null;
 			txtRoutinePath.setText("");
-			txtRoutineName.setText("");
 			txtRoutineNodesCount.setText("");
 			btnChooseRoutine.setEnabled(true);
 			btnStartRoutine.setEnabled(false);
@@ -127,7 +132,6 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 		terminal.stopRoutine();
 		routine = null;
 		txtRoutinePath.setText("");
-		txtRoutineName.setText("");
 		txtRoutineNodesCount.setText("");
 		btnChooseRoutine.setEnabled(enabled);
 		btnStartRoutine.setEnabled(false);

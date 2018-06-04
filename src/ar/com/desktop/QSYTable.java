@@ -54,7 +54,7 @@ public final class QSYTable extends JTable {
 
 		private static final long serialVersionUID = 1L;
 
-		private static final String[] columnsName = { "ID", "IP", "COLOR" };
+		private static final String[] columnsName = { "ID", "IP", "BATERÍA" };
 		private final List<Integer> nodes;
 
 		public QSYTableModel() {
@@ -68,7 +68,7 @@ public final class QSYTable extends JTable {
 		}
 
 		public void addNode(int physicalId, InetAddress nodeAddress) {
-			addRow(new Object[] { physicalId, nodeAddress, "SIN COLOR" });
+			addRow(new Object[] { physicalId, nodeAddress, "100%" });
 			nodes.add(physicalId);
 		}
 

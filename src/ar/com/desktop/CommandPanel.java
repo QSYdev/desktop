@@ -1,9 +1,8 @@
 package ar.com.desktop;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -14,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 
 import ar.com.terminal.Color;
@@ -32,33 +30,41 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 	private final JButton btnSendCommand;
 
 	public CommandPanel(QSYFrame parent) {
-		this.setLayout(new GridLayout(0, 2, 2, 2));
+		this.setLayout(new GridBagLayout());
 		this.setBorder(new CompoundBorder(BorderFactory.createTitledBorder("Comando"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-		JLabel lblColor = new JLabel("Color:");
-		this.add(lblColor);
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1;
 
-		comboBoxColor = new JComboBox<>();
+		c.gridx = 0;
+		c.gridy = 0;
+		this.add(new JLabel("Color:"), c);
+
+		c.gridx = 1;
+		c.gridy = 0;
+		this.add(comboBoxColor = new JComboBox<>(), c);
 		comboBoxColor.setModel(new DefaultComboBoxModel<>(comboBoxPosibilites));
-		this.add(comboBoxColor);
 
-		JLabel lblDelay = new JLabel("Delay: (ms)");
-		this.add(lblDelay);
+		c.gridx = 0;
+		c.gridy = 1;
+		this.add(new JLabel("Delay: (ms)"), c);
 
-		textDelay = new JTextField();
-		textDelay.setHorizontalAlignment(SwingConstants.LEFT);
-		textDelay.setText("0");
-		textDelay.setMaximumSize(new Dimension(Integer.MAX_VALUE, textDelay.getPreferredSize().width));
-		this.add(textDelay);
+		c.gridx = 1;
+		c.gridy = 1;
+		this.add(textDelay = new JTextField("0"), c);
 
-		checkBoxStepId = new JCheckBox("Activar sensor");
-		checkBoxStepId.setMnemonic(KeyEvent.VK_A);
-		this.add(checkBoxStepId);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		this.add(checkBoxStepId = new JCheckBox("Activar sensor"), c);
 
-		btnSendCommand = new JButton("Enviar comando");
-		this.add(btnSendCommand);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 2;
+		this.add(btnSendCommand = new JButton("Enviar comando"), c);
 
-		btnSendCommand.addActionListener((ActionEvent e) -> {
+		btnSendCommand.addActionListener((ActionEvent event) -> {
 
 			try {
 				Color color = colors[comboBoxColor.getSelectedIndex()];
@@ -67,12 +73,12 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 				int stepId = (checkBoxStepId.isSelected()) ? 1 : 0;
 				QSYPacket.CommandArgs commandArgs = new QSYPacket.CommandArgs(nodeId, color, delay, stepId);
 				parent.getTerminal().sendCommand(commandArgs);
-			} catch (IndexOutOfBoundsException exception) {
+			} catch (IndexOutOfBoundsException e) {
 				JOptionPane.showMessageDialog(null, "Se debe seleccionar un color", "Error", JOptionPane.ERROR_MESSAGE);
-			} catch (NumberFormatException exception) {
-				JOptionPane.showMessageDialog(null, "Se debe colocar un numero entero de 4 Bytes sin signo.", "Error", JOptionPane.ERROR_MESSAGE);
-			} catch (Exception exception) {
-				JOptionPane.showMessageDialog(null, exception.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Se debe colocar un numero entero", "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 
 		});
@@ -86,10 +92,8 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 		checkBoxStepId.setEnabled(enabled);
 		checkBoxStepId.setSelected(false);
 		btnSendCommand.setEnabled(enabled);
-		if (!enabled) {
-			comboBoxColor.setSelectedIndex(0);
-			textDelay.setText("0");
-		}
+		comboBoxColor.setSelectedIndex(0);
+		textDelay.setText("0");
 		super.setEnabled(enabled);
 	}
 

@@ -1,14 +1,10 @@
 package ar.com.desktop;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -55,24 +51,37 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		customRoutinePanel = new CustomRoutinePanel(this);
 		playerExecutionPanel = new PlayerExecutionPanel(this);
 
-		Container rightPane = new Container();
-		rightPane.setLayout(new BoxLayout(rightPane, BoxLayout.Y_AXIS));
-		rightPane.add(commandPanel);
-		rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0, Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
+		JPanel contentPane = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.weighty = 1;
 
-		rightPane.add(customRoutinePanel);
-		rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0, Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 3;
+		c.gridheight = 6;
+		contentPane.add(searchPanel, c);
 
-		// rightPane.add(playerExecutionPanel);
-		// rightPane.add(new Box.Filler(new Dimension(0, 0), new Dimension(0,
-		// Integer.MAX_VALUE), new Dimension(0, Integer.MAX_VALUE)));
+		c.gridx = 3;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		c.gridheight = 2;
+		contentPane.add(commandPanel, c);
 
-		JPanel contentPane = (JPanel) this.getContentPane();
-		contentPane.setLayout(new BorderLayout());
+		c.gridx = 3;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.gridheight = 2;
+		contentPane.add(customRoutinePanel, c);
 
-		contentPane.add(searchPanel, BorderLayout.CENTER);
-		contentPane.add(rightPane, BorderLayout.EAST);
-		contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		c.gridx = 3;
+		c.gridy = 4;
+		c.gridwidth = 2;
+		c.gridheight = 2;
+		contentPane.add(playerExecutionPanel, c);
+
+		setContentPane(contentPane);
 
 		searchPanel.setEnabled(true);
 		commandPanel.setEnabled(false);
