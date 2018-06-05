@@ -41,86 +41,89 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable 
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 1;
 
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.weightx = 0;
+		c.weightx = 0.2;
 		this.add(new JLabel("Nodos"), c);
 
 		c.gridx = 1;
 		c.gridy = 0;
-		c.gridwidth = 2;
-		c.weightx = 1;
+		c.gridwidth = 1;
+		c.weightx = 0.8;
 		this.add(txtNodesCount = new JTextField("0"), c);
 
 		c.gridx = 0;
 		c.gridy = 1;
-		c.gridwidth = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(checkBoxWaitForAllPlayers = new JCheckBox("Esperar a todos los jugadores"), c);
 
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 1;
-		c.weightx = 0;
+		c.weightx = 0.2;
 		this.add(new JLabel("Delay"), c);
 
 		c.gridx = 1;
 		c.gridy = 2;
-		c.gridwidth = 2;
-		c.weightx = 1;
+		c.gridwidth = 1;
+		c.weightx = 0.8;
 		this.add(txtStepDelay = new JTextField("0"), c);
 
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 1;
-		c.weightx = 0;
+		c.weightx = 0.2;
 		this.add(new JLabel("StepTimeOut"), c);
 
 		c.gridx = 1;
 		c.gridy = 3;
-		c.gridwidth = 2;
-		c.weightx = 1;
+		c.gridwidth = 1;
+		c.weightx = 0.8;
 		this.add(txtStepTimeOut = new JTextField("0"), c);
 
 		c.gridx = 0;
 		c.gridy = 4;
-		c.gridwidth = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(checkBoxStopOnStepTimeOut = new JCheckBox("Frenar ante un time out"), c);
 
 		c.gridx = 0;
 		c.gridy = 5;
 		c.gridwidth = 1;
-		c.weightx = 0;
+		c.weightx = 0.2;
 		this.add(new JLabel("Steps"), c);
 
 		c.gridx = 1;
 		c.gridy = 5;
-		c.gridwidth = 2;
-		c.weightx = 1;
+		c.gridwidth = 1;
+		c.weightx = 0.8;
 		this.add(txtNumberOfSteps = new JTextField("0"), c);
 
 		c.gridx = 0;
 		c.gridy = 6;
 		c.gridwidth = 1;
-		c.weightx = 0;
+		c.weightx = 0.2;
 		this.add(new JLabel("TimeOut total"), c);
 
 		c.gridx = 1;
 		c.gridy = 6;
-		c.gridwidth = 2;
-		c.weightx = 1;
+		c.gridwidth = 1;
+		c.weightx = 0.8;
 		this.add(txtExecutionTimeOut = new JTextField("0"), c);
 
 		c.gridx = 0;
 		c.gridy = 7;
-		c.gridwidth = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(btnStartExecution = new JButton("Empezar Rutina"), c);
 
 		c.gridx = 0;
 		c.gridy = 8;
-		c.gridwidth = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(btnStopExecution = new JButton("Finalizar Rutina"), c);
 
 		btnStartExecution.addActionListener((ActionEvent event) -> {

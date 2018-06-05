@@ -54,7 +54,7 @@ public final class QSYTable extends JTable {
 
 		private static final long serialVersionUID = 1L;
 
-		private static final String[] columnsName = { "ID", "IP", "BATERÍA" };
+		private static final String[] columnsName = { "ID", "IP", "BATERIA" };
 		private final List<Integer> nodes;
 
 		public QSYTableModel() {

@@ -48,40 +48,43 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 1;
 
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridwidth = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(btnChooseRoutine = new JButton("Seleccionar..."), c);
 
 		c.gridx = 0;
 		c.gridy = 1;
-		c.gridwidth = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(txtRoutinePath = new JTextField(), c);
 		txtRoutinePath.setEnabled(false);
 
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 1;
-		c.weightx = 0;
+		c.weightx = 0.2;
 		this.add(new JLabel("Nodos"), c);
 
 		c.gridx = 1;
 		c.gridy = 2;
-		c.gridwidth = 2;
-		c.weightx = 1;
+		c.gridwidth = 1;
+		c.weightx = 0.8;
 		this.add(txtRoutineNodesCount = new JTextField(), c);
 		txtRoutineNodesCount.setEnabled(false);
 
 		c.gridx = 0;
 		c.gridy = 3;
-		c.gridwidth = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(btnStartRoutine = new JButton("Empezar Rutina"), c);
 
 		c.gridx = 0;
 		c.gridy = 4;
-		c.gridwidth = 3;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(btnStopRoutine = new JButton("Finalizar Rutina"), c);
 
 		btnChooseRoutine.addActionListener((ActionEvent event) -> {

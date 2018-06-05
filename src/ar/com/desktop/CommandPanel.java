@@ -35,33 +35,38 @@ public final class CommandPanel extends JPanel implements AutoCloseable {
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 1;
 
 		c.gridx = 0;
 		c.gridy = 0;
+		c.weightx = 0.2;
 		this.add(new JLabel("Color:"), c);
 
 		c.gridx = 1;
 		c.gridy = 0;
+		c.weightx = 0.8;
 		this.add(comboBoxColor = new JComboBox<>(), c);
 		comboBoxColor.setModel(new DefaultComboBoxModel<>(comboBoxPosibilites));
 
 		c.gridx = 0;
 		c.gridy = 1;
+		c.weightx = 0.2;
 		this.add(new JLabel("Delay: (ms)"), c);
 
 		c.gridx = 1;
 		c.gridy = 1;
+		c.weightx = 0.8;
 		this.add(textDelay = new JTextField("0"), c);
 
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(checkBoxStepId = new JCheckBox("Activar sensor"), c);
 
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(btnSendCommand = new JButton("Enviar comando"), c);
 
 		btnSendCommand.addActionListener((ActionEvent event) -> {

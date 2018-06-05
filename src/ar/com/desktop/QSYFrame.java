@@ -54,31 +54,30 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		JPanel contentPane = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1;
 		c.weighty = 1;
 
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridwidth = 3;
-		c.gridheight = 6;
+		c.gridheight = 3;
+		c.weightx = 0.9;
 		contentPane.add(searchPanel, c);
 
-		c.gridx = 3;
+		c.gridx = 1;
 		c.gridy = 0;
-		c.gridwidth = 2;
-		c.gridheight = 2;
+		c.gridheight = 1;
+		c.weightx = 0.1;
 		contentPane.add(commandPanel, c);
 
-		c.gridx = 3;
-		c.gridy = 2;
-		c.gridwidth = 2;
-		c.gridheight = 2;
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridheight = 1;
+		c.weightx = 0.1;
 		contentPane.add(customRoutinePanel, c);
 
-		c.gridx = 3;
-		c.gridy = 4;
-		c.gridwidth = 2;
-		c.gridheight = 2;
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridheight = 1;
+		c.weightx = 0.1;
 		contentPane.add(playerExecutionPanel, c);
 
 		setContentPane(contentPane);
