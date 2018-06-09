@@ -1,4 +1,4 @@
-package ar.com.desktop;
+package desktop;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,12 +11,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import ar.com.terminal.Event.ExternalEvent;
-import ar.com.terminal.Event.ExternalEvent.ExecutionFinished;
-import ar.com.terminal.Event.ExternalEvent.ExecutionInterrupted;
-import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
-import ar.com.terminal.EventListener;
-import ar.com.terminal.Terminal;
+import terminal.Event.ExternalEvent;
+import terminal.Event.ExternalEvent.ExecutionFinished;
+import terminal.Event.ExternalEvent.ExecutionInterrupted;
+import terminal.Event.ExternalEvent.ExternalEventVisitor;
+import terminal.EventListener;
+import terminal.Terminal;
 
 public final class QSYFrame extends JFrame implements AutoCloseable {
 

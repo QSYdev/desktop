@@ -1,4 +1,4 @@
-package ar.com.desktop;
+package desktop;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,9 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 
-import ar.com.terminal.Color;
-import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
-import ar.com.terminal.QSYPacket;
+import terminal.Color;
+import terminal.Event.ExternalEvent.ExternalEventVisitor;
+import terminal.QSYPacket;
 
 public final class CommandPanel extends JPanel implements AutoCloseable, ExternalEventVisitor {
 

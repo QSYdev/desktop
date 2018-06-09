@@ -12,5 +12,7 @@ local.properties
 .classpath
 .project
 .idea/
+.gradle/
 /build/
 out/
+*.iml
