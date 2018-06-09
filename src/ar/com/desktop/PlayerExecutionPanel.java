@@ -15,9 +15,12 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 
 import ar.com.terminal.Color;
+import ar.com.terminal.Event.ExternalEvent.ExecutionFinished;
+import ar.com.terminal.Event.ExternalEvent.ExecutionInterrupted;
+import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
 import ar.com.terminal.Terminal;
 
-public final class PlayerExecutionPanel extends JPanel implements AutoCloseable {
+public final class PlayerExecutionPanel extends JPanel implements AutoCloseable, ExternalEventVisitor {
 
 	private static final long serialVersionUID = -2940823866642994658L;
 
@@ -177,6 +180,16 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable 
 	@Override
 	public void close() {
 		terminal.stopRoutine();
+	}
+
+	@Override
+	public void visit(ExecutionFinished event) {
+		setEnabled(true);
+	}
+
+	@Override
+	public void visit(ExecutionInterrupted event) {
+		setEnabled(true);
 	}
 
 }

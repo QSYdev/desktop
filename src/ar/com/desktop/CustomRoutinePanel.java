@@ -16,11 +16,14 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+import ar.com.terminal.Event.ExternalEvent.ExecutionFinished;
+import ar.com.terminal.Event.ExternalEvent.ExecutionInterrupted;
+import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
 import ar.com.terminal.Routine;
 import ar.com.terminal.RoutineManager;
 import ar.com.terminal.Terminal;
 
-public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
+public final class CustomRoutinePanel extends JPanel implements AutoCloseable, ExternalEventVisitor {
 
 	private static final long serialVersionUID = 1L;
 	private static final File ROOT_FILE = FileSystemView.getFileSystemView().createFileObject("resources");
@@ -169,6 +172,16 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 	@Override
 	public void close() {
 		terminal.stopRoutine();
+	}
+
+	@Override
+	public void visit(ExecutionFinished event) {
+		setEnabled(true);
+	}
+
+	@Override
+	public void visit(ExecutionInterrupted event) {
+		setEnabled(true);
 	}
 
 }

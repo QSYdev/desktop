@@ -16,9 +16,10 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 
 import ar.com.terminal.Color;
+import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
 import ar.com.terminal.QSYPacket;
 
-public final class CommandPanel extends JPanel implements AutoCloseable {
+public final class CommandPanel extends JPanel implements AutoCloseable, ExternalEventVisitor {
 
 	private static final long serialVersionUID = 1L;
 	private static final Color[] colors = { Color.NO_COLOR, Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.WHITE };

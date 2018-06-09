@@ -1,7 +1,6 @@
 package ar.com.desktop;
 
 import java.awt.event.ActionEvent;
-import java.net.InetAddress;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -10,9 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 
-import ar.com.terminal.Color;
+import ar.com.terminal.Event.ExternalEvent.ConnectedNode;
+import ar.com.terminal.Event.ExternalEvent.DisconnectedNode;
+import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
 
-public final class SearchPanel extends JPanel implements AutoCloseable {
+public final class SearchPanel extends JPanel implements AutoCloseable, ExternalEventVisitor {
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,12 +56,14 @@ public final class SearchPanel extends JPanel implements AutoCloseable {
 		});
 	}
 
-	public void connectedNode(int physicalId, InetAddress nodeAddress, Color color) {
-		table.addNode(physicalId, nodeAddress);
+	@Override
+	public void visit(ConnectedNode event) {
+		table.addNode(event.getPhysicalId(), event.getNodeAddress());
 	}
 
-	public void disconnectedNode(int physicalId) {
-		table.removeNode(physicalId);
+	@Override
+	public void visit(DisconnectedNode event) {
+		table.removeNode(event.getPhysicalId());
 	}
 
 	public Integer getSelectedNodeId() {

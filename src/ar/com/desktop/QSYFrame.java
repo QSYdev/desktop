@@ -11,8 +11,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import ar.com.terminal.Color;
 import ar.com.terminal.Event.ExternalEvent;
+import ar.com.terminal.Event.ExternalEvent.ExecutionFinished;
+import ar.com.terminal.Event.ExternalEvent.ExecutionInterrupted;
 import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
 import ar.com.terminal.EventListener;
 import ar.com.terminal.Terminal;
@@ -103,6 +104,10 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		return customRoutinePanel;
 	}
 
+	public PlayerExecutionPanel getPlayerExecutionPanel() {
+		return playerExecutionPanel;
+	}
+
 	public Terminal getTerminal() {
 		return terminal;
 	}
@@ -116,6 +121,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		searchPanel.close();
 		commandPanel.close();
 		customRoutinePanel.close();
+		playerExecutionPanel.close();
 		eventHandler.close();
 	}
 
@@ -146,12 +152,24 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 		@Override
 		public void visit(ExternalEvent.ConnectedNode event) {
-			searchPanel.connectedNode(event.getPhysicalId(), event.getNodeAddress(), Color.NO_COLOR);
+			searchPanel.visit(event);
 		}
 
 		@Override
 		public void visit(ExternalEvent.DisconnectedNode event) {
-			searchPanel.disconnectedNode(event.getPhysicalId());
+			searchPanel.visit(event);
+		}
+
+		@Override
+		public void visit(ExecutionFinished event) {
+			customRoutinePanel.visit(event);
+			playerExecutionPanel.visit(event);
+		}
+
+		@Override
+		public void visit(ExecutionInterrupted event) {
+			customRoutinePanel.visit(event);
+			playerExecutionPanel.visit(event);
 		}
 
 		@Override
