@@ -24,6 +24,7 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable,
 
 	private static final long serialVersionUID = -2940823866642994658L;
 
+	private final JTextField txtPlayersCount;
 	private final JTextField txtNodesCount;
 	private final JCheckBox checkBoxWaitForAllPlayers;
 	private final JTextField txtStepDelay;
@@ -49,91 +50,109 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable,
 		c.gridy = 0;
 		c.gridwidth = 1;
 		c.weightx = 0.2;
-		this.add(new JLabel("Nodos"), c);
+		this.add(new JLabel("Jugadores"), c);
 
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridwidth = 1;
 		c.weightx = 0.8;
-		this.add(txtNodesCount = new JTextField("0"), c);
+		this.add(txtPlayersCount = new JTextField("0"), c);
 
 		c.gridx = 0;
 		c.gridy = 1;
+		c.gridwidth = 1;
+		c.weightx = 0.2;
+		this.add(new JLabel("Nodos"), c);
+
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.weightx = 0.8;
+		this.add(txtNodesCount = new JTextField("0"), c);
+
+		c.gridx = 0;
+		c.gridy = 2;
 		c.gridwidth = 2;
 		c.weightx = 1;
 		this.add(checkBoxWaitForAllPlayers = new JCheckBox("Esperar a todos los jugadores"), c);
 
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.gridwidth = 1;
 		c.weightx = 0.2;
 		this.add(new JLabel("Delay"), c);
 
 		c.gridx = 1;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.gridwidth = 1;
 		c.weightx = 0.8;
 		this.add(txtStepDelay = new JTextField("0"), c);
 
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
 		c.gridwidth = 1;
 		c.weightx = 0.2;
 		this.add(new JLabel("StepTimeOut"), c);
 
 		c.gridx = 1;
-		c.gridy = 3;
+		c.gridy = 4;
 		c.gridwidth = 1;
 		c.weightx = 0.8;
 		this.add(txtStepTimeOut = new JTextField("0"), c);
 
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = 5;
 		c.gridwidth = 2;
 		c.weightx = 1;
 		this.add(checkBoxStopOnStepTimeOut = new JCheckBox("Frenar ante un time out"), c);
 
 		c.gridx = 0;
-		c.gridy = 5;
+		c.gridy = 6;
 		c.gridwidth = 1;
 		c.weightx = 0.2;
 		this.add(new JLabel("Steps"), c);
 
 		c.gridx = 1;
-		c.gridy = 5;
+		c.gridy = 6;
 		c.gridwidth = 1;
 		c.weightx = 0.8;
 		this.add(txtNumberOfSteps = new JTextField("0"), c);
 
 		c.gridx = 0;
-		c.gridy = 6;
+		c.gridy = 7;
 		c.gridwidth = 1;
 		c.weightx = 0.2;
 		this.add(new JLabel("TimeOut total"), c);
 
 		c.gridx = 1;
-		c.gridy = 6;
+		c.gridy = 7;
 		c.gridwidth = 1;
 		c.weightx = 0.8;
 		this.add(txtExecutionTimeOut = new JTextField("0"), c);
 
 		c.gridx = 0;
-		c.gridy = 7;
+		c.gridy = 8;
 		c.gridwidth = 2;
 		c.weightx = 1;
 		this.add(btnStartExecution = new JButton("Empezar Rutina"), c);
 
 		c.gridx = 0;
-		c.gridy = 8;
+		c.gridy = 9;
 		c.gridwidth = 2;
 		c.weightx = 1;
 		this.add(btnStopExecution = new JButton("Finalizar Rutina"), c);
 
 		btnStartExecution.addActionListener((ActionEvent event) -> {
 			try {
-				int numberOfNodes = Integer.parseInt(txtNodesCount.getText());
-				ArrayList<Color> playersAndColors = new ArrayList<>();
+				int playersCount = Integer.parseInt(txtPlayersCount.getText());
+				ArrayList<Color> playersAndColors = new ArrayList<>(playersCount);
+				for (int i = 0; i < playersCount; i++) {
+					// TODO Invocar al color factory de la terminal.
+				}
+
 				playersAndColors.add(Color.RED);
+
+				int numberOfNodes = Integer.parseInt(txtNodesCount.getText());
 				boolean waitForAllPlayers = checkBoxWaitForAllPlayers.isSelected();
 				long stepDelay = Long.parseLong(txtStepDelay.getText());
 				long stepTimeOut = Long.parseLong(txtStepTimeOut.getText());
@@ -160,6 +179,7 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable,
 	@Override
 	public void setEnabled(boolean enabled) {
 		terminal.stopRoutine();
+		txtPlayersCount.setEnabled(enabled);
 		txtNodesCount.setEnabled(enabled);
 		checkBoxWaitForAllPlayers.setEnabled(enabled);
 		txtStepDelay.setEnabled(enabled);
@@ -168,6 +188,7 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable,
 		txtNumberOfSteps.setEnabled(enabled);
 		btnStartExecution.setEnabled(enabled);
 		btnStopExecution.setEnabled(false);
+		txtPlayersCount.setText("0");
 		txtNodesCount.setText("0");
 		checkBoxWaitForAllPlayers.setSelected(false);
 		txtStepDelay.setText("0");
