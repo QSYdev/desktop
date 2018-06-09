@@ -5,12 +5,12 @@
   "totalTimeOut": 0,
   "steps": [
     {
-      "expression": "1",
+      "expression": "0",
       "timeOut": 0,
       "stopOnTimeout": false,
       "nodesConfigurations": [
         {
-          "id": 1,
+          "id": 0,
           "delay": 500,
           "color": {
             "red": 15,
@@ -21,12 +21,12 @@
       ]
     },
     {
-      "expression": "1",
+      "expression": "0",
       "timeOut": 2000,
       "stopOnTimeout": false,
       "nodesConfigurations": [
         {
-          "id": 1,
+          "id": 0,
           "delay": 500,
           "color": {
             "red": 15,
@@ -37,19 +37,19 @@
       ]
     },
     {
-      "expression": "1",
+      "expression": "0",
       "timeOut": 2000,
       "stopOnTimeout": false,
       "nodesConfigurations": [
         {
-          "id": 1,
+          "id": 0,
           "delay": 500,
           "color": {
             "red": 15,
             "green": 0,
             "blue": 0
           }
-        }
+		}
       ]
     }
   ]

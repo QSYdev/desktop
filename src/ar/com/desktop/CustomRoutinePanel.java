@@ -28,6 +28,7 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 	private final JFileChooser fileChooser;
 	private final JButton btnChooseRoutine;
 	private final JTextField txtRoutinePath;
+	private final JButton btnValidateRoutine;
 	private final JTextField txtRoutineNodesCount;
 	private final JButton btnStartRoutine;
 	private final JButton btnStopRoutine;
@@ -59,30 +60,36 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 		c.gridy = 1;
 		c.gridwidth = 2;
 		c.weightx = 1;
+		this.add(btnValidateRoutine = new JButton("Validar Rutina"), c);
+
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		this.add(txtRoutinePath = new JTextField(), c);
 		txtRoutinePath.setEnabled(false);
 
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.gridwidth = 1;
 		c.weightx = 0.2;
 		this.add(new JLabel("Nodos"), c);
 
 		c.gridx = 1;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.gridwidth = 1;
 		c.weightx = 0.8;
 		this.add(txtRoutineNodesCount = new JTextField(), c);
 		txtRoutineNodesCount.setEnabled(false);
 
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
 		c.gridwidth = 2;
 		c.weightx = 1;
 		this.add(btnStartRoutine = new JButton("Empezar Rutina"), c);
 
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = 5;
 		c.gridwidth = 2;
 		c.weightx = 1;
 		this.add(btnStopRoutine = new JButton("Finalizar Rutina"), c);
@@ -97,6 +104,7 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 					txtRoutinePath.setText(selectedFile.getName());
 					txtRoutineNodesCount.setText("" + routine.getNumberOfNodes());
 					btnChooseRoutine.setEnabled(true);
+					btnValidateRoutine.setEnabled(true);
 					btnStartRoutine.setEnabled(true);
 					btnStopRoutine.setEnabled(false);
 				} catch (IllegalArgumentException e) {
@@ -107,10 +115,24 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 			}
 		});
 
+		btnValidateRoutine.addActionListener((ActionEvent event) -> {
+			try {
+				RoutineManager.validateRoutine(routine);
+				JOptionPane.showMessageDialog(null, "La rutina es valida", "Exito", JOptionPane.INFORMATION_MESSAGE);
+			} catch (IllegalArgumentException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			btnChooseRoutine.setEnabled(true);
+			btnValidateRoutine.setEnabled(true);
+			btnStartRoutine.setEnabled(true);
+			btnStopRoutine.setEnabled(false);
+		});
+
 		btnStartRoutine.addActionListener((ActionEvent event) -> {
 			try {
 				parent.getTerminal().startCustomRoutine(routine);
 				btnChooseRoutine.setEnabled(false);
+				btnValidateRoutine.setEnabled(false);
 				btnStartRoutine.setEnabled(false);
 				btnStopRoutine.setEnabled(true);
 			} catch (Exception e) {
@@ -124,6 +146,7 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 			txtRoutinePath.setText("");
 			txtRoutineNodesCount.setText("");
 			btnChooseRoutine.setEnabled(true);
+			btnValidateRoutine.setEnabled(false);
 			btnStartRoutine.setEnabled(false);
 			btnStopRoutine.setEnabled(false);
 		});
@@ -137,6 +160,7 @@ public final class CustomRoutinePanel extends JPanel implements AutoCloseable {
 		txtRoutinePath.setText("");
 		txtRoutineNodesCount.setText("");
 		btnChooseRoutine.setEnabled(enabled);
+		btnValidateRoutine.setEnabled(false);
 		btnStartRoutine.setEnabled(false);
 		btnStopRoutine.setEnabled(false);
 		super.setEnabled(enabled);

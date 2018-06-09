@@ -21,7 +21,7 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int WIDTH = 550;
+	private static final int WIDTH = 600;
 	private static final int HEIGHT = 600;
 
 	private final ExternalEventHandler eventHandler;
@@ -59,25 +59,25 @@ public final class QSYFrame extends JFrame implements AutoCloseable {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridheight = 3;
-		c.weightx = 0.9;
+		c.weightx = 0.99;
 		contentPane.add(searchPanel, c);
 
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridheight = 1;
-		c.weightx = 0.1;
+		c.weightx = 0.01;
 		contentPane.add(commandPanel, c);
 
 		c.gridx = 1;
 		c.gridy = 1;
 		c.gridheight = 1;
-		c.weightx = 0.1;
+		c.weightx = 0.01;
 		contentPane.add(customRoutinePanel, c);
 
 		c.gridx = 1;
 		c.gridy = 2;
 		c.gridheight = 1;
-		c.weightx = 0.1;
+		c.weightx = 0.01;
 		contentPane.add(playerExecutionPanel, c);
 
 		setContentPane(contentPane);
