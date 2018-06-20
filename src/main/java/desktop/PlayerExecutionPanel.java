@@ -146,10 +146,9 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable,
 			try {
 				int playersCount = Integer.parseInt(txtPlayersCount.getText());
 				ArrayList<Color> playersAndColors = new ArrayList<>(playersCount);
-				for (int i = 0; i < playersCount; i++) {
-					// TODO Invocar al color factory de la terminal.
-				}
 
+				playersAndColors.add(Color.RED);
+				playersAndColors.add(Color.RED);
 				playersAndColors.add(Color.RED);
 
 				int numberOfNodes = Integer.parseInt(txtNodesCount.getText());

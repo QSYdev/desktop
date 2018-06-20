@@ -30,7 +30,5 @@ configurations.all {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-
     compile group: 'com.github.QSYdev', name: 'terminal', version: 'master-SNAPSHOT', changing: true
 }
