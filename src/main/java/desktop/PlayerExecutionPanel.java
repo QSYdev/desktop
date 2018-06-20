@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 
 import terminal.Color;
+import terminal.Color.ColorFactory;
 import terminal.Event.ExternalEvent.ExecutionFinished;
 import terminal.Event.ExternalEvent.ExecutionInterrupted;
 import terminal.Event.ExternalEvent.ExternalEventVisitor;
@@ -23,6 +25,7 @@ import terminal.Terminal;
 public final class PlayerExecutionPanel extends JPanel implements AutoCloseable, ExternalEventVisitor {
 
 	private static final long serialVersionUID = -2940823866642994658L;
+	private static final Random random = new Random(System.nanoTime());
 
 	private final JTextField txtPlayersCount;
 	private final JTextField txtNodesCount;
@@ -146,10 +149,8 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable,
 			try {
 				int playersCount = Integer.parseInt(txtPlayersCount.getText());
 				ArrayList<Color> playersAndColors = new ArrayList<>(playersCount);
-
-				playersAndColors.add(Color.RED);
-				playersAndColors.add(Color.RED);
-				playersAndColors.add(Color.RED);
+				for (int i = 0; i < playersCount; i++)
+					playersAndColors.add(ColorFactory.createColor((byte) (random.nextInt(2) * 0x0F), (byte) (random.nextInt(2) * 0x0F), (byte) (random.nextInt(2) * 0x0F)));
 
 				int numberOfNodes = Integer.parseInt(txtNodesCount.getText());
 				boolean waitForAllPlayers = checkBoxWaitForAllPlayers.isSelected();
