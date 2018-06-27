@@ -1,4 +1,4 @@
-package ar.com.desktop;
+package desktop;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,12 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 
-import ar.com.terminal.Color;
-import ar.com.terminal.Color.ColorFactory;
-import ar.com.terminal.Event.ExternalEvent.ExecutionFinished;
-import ar.com.terminal.Event.ExternalEvent.ExecutionInterrupted;
-import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
-import ar.com.terminal.Terminal;
+import terminal.Color;
+import terminal.Color.ColorFactory;
+import terminal.Event.ExternalEvent.ExecutionFinished;
+import terminal.Event.ExternalEvent.ExecutionInterrupted;
+import terminal.Event.ExternalEvent.ExternalEventVisitor;
+import terminal.Terminal;
 
 public final class PlayerExecutionPanel extends JPanel implements AutoCloseable, ExternalEventVisitor {
 

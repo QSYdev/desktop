@@ -1,4 +1,4 @@
-package ar.com.desktop;
+package desktop;
 
 import java.awt.Dimension;
 import java.net.InetAddress;

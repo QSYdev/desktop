@@ -1,4 +1,4 @@
-package ar.com.desktop;
+package desktop;
 
 import java.awt.event.ActionEvent;
 
@@ -9,9 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 
-import ar.com.terminal.Event.ExternalEvent.ConnectedNode;
-import ar.com.terminal.Event.ExternalEvent.DisconnectedNode;
-import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
+import terminal.Event.ExternalEvent.ConnectedNode;
+import terminal.Event.ExternalEvent.DisconnectedNode;
+import terminal.Event.ExternalEvent.ExternalEventVisitor;
 
 public final class SearchPanel extends JPanel implements AutoCloseable, ExternalEventVisitor {
 

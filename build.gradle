@@ -1,0 +1,34 @@
+group 'com.github.QSYdev'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url "https://jitpack.io"
+//        credentials { username authToken }
+    }
+}
+
+task runMain(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    main = 'main.Main'
+}
+
+task showMeCache << {
+    configurations.compile.each { println it }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+dependencies {
+    compile group: 'com.github.QSYdev', name: 'terminal', version: 'master-SNAPSHOT', changing: true
+}
