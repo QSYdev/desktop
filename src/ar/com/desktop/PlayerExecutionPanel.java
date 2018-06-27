@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 
 import ar.com.terminal.Color;
+import ar.com.terminal.Color.ColorFactory;
 import ar.com.terminal.Event.ExternalEvent.ExecutionFinished;
 import ar.com.terminal.Event.ExternalEvent.ExecutionInterrupted;
 import ar.com.terminal.Event.ExternalEvent.ExternalEventVisitor;
@@ -23,6 +25,7 @@ import ar.com.terminal.Terminal;
 public final class PlayerExecutionPanel extends JPanel implements AutoCloseable, ExternalEventVisitor {
 
 	private static final long serialVersionUID = -2940823866642994658L;
+	private static final Random random = new Random(System.nanoTime());
 
 	private final JTextField txtPlayersCount;
 	private final JTextField txtNodesCount;
@@ -146,9 +149,8 @@ public final class PlayerExecutionPanel extends JPanel implements AutoCloseable,
 			try {
 				int playersCount = Integer.parseInt(txtPlayersCount.getText());
 				ArrayList<Color> playersAndColors = new ArrayList<>(playersCount);
-				for (int i = 0; i < playersCount; i++) {
-					// TODO Invocar al color factory de la terminal.
-				}
+				for (int i = 0; i < playersCount; i++)
+					playersAndColors.add(ColorFactory.createColor((byte) (random.nextInt(2) * 0x0F), (byte) (random.nextInt(2) * 0x0F), (byte) (random.nextInt(2) * 0x0F)));
 
 				playersAndColors.add(Color.RED);
 

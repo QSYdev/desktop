@@ -29,7 +29,7 @@ public final class SearchPanel extends JPanel implements AutoCloseable, External
 		JScrollPane scrollPanel = new JScrollPane(table);
 		this.add(scrollPanel);
 
-		btnStartSearch = new JButton("Buscar de nodos");
+		btnStartSearch = new JButton("Buscar nodos");
 		btnStartSearch.setAlignmentX(CENTER_ALIGNMENT);
 		this.add(btnStartSearch);
 
